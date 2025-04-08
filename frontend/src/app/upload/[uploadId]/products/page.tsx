@@ -127,11 +127,12 @@ export default function ProductListPage({ params }: { params: Promise<{ uploadId
 
     const keys = new Set<string>();
     const options: Record<string, Set<string>> = {};
-
+      // @ts-ignore
     items.forEach(p => {
       Object.entries(p.attributes || {}).forEach(([key, value]) => {
         keys.add(key);
         if (!options[key]) options[key] = new Set();
+        // @ts-ignore
         if (value) options[key].add(value);
       });
     });
