@@ -120,7 +120,6 @@ export default function ProductListPage({ params }: { params: Promise<{ uploadId
     const res = await fetch(`/api/uploads/${uploadId}/products?${queryParams}`);
     const response = await res.json();
     const items = response.data.items;
-    console.log('debug items', items);
     setProducts(items);
     setTotalPages(Math.ceil(response.data.total / limit));
     setLoading(false);
@@ -136,7 +135,6 @@ export default function ProductListPage({ params }: { params: Promise<{ uploadId
         if (value) options[key].add(value);
       });
     });
-    console.log('debug keys', keys);
 
     const attributeKeyList = Array.from(keys);
     setAttributeKeys(attributeKeyList);

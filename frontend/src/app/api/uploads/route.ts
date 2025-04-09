@@ -13,7 +13,6 @@ export async function POST(req: NextRequest) {
 
     if (!uploadRes.ok) {
       // Forward detailed error message from the backend
-      console.log('debug result', result.errors[0].message);
       return NextResponse.json(
         {
           error: result.message || result.errors[0].message || 'Upload failed due to server error.',
