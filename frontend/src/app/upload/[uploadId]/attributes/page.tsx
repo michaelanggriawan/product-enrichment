@@ -46,12 +46,11 @@ export default function AttributeSelectPage({ params }: { params: Promise<{ uplo
   };
 
   const handleAddAttribute = async () => {
-    setLoadingSave(true);
     if (!newAttr.name || !newAttr.type) {
       alert('Please fill in name and type');
       return;
     }
-
+    setLoadingSave(true);
     const body = {
       name: newAttr.name,
       type: newAttr.type,
@@ -136,7 +135,7 @@ export default function AttributeSelectPage({ params }: { params: Promise<{ uplo
                   type="checkbox"
                   checked={selected.includes(attr.id)}
                   onChange={() => toggleSelection(attr.id)}
-                  className="accent-blue-500 w-5 h-5"
+                  className="accent-blue-500 w-5 h-5 cursor-pointer"
                 />
                 <span className="capitalize">{attr.name}</span>
               </label>
@@ -199,9 +198,9 @@ export default function AttributeSelectPage({ params }: { params: Promise<{ uplo
         <button
           disabled={loadingAddSave}
           onClick={handleAddAttribute}
-          className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded cursor-pointer"
+          className={`bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded ${loadingAddSave ? 'cursor-not-allowed' : 'cursor-pointer'}`}
         >
-          Add Attribute
+          {loadingAddSave ? 'Loading...' : 'Add attribute'}
         </button>
       </div>
 
@@ -209,7 +208,7 @@ export default function AttributeSelectPage({ params }: { params: Promise<{ uplo
         <button
           onClick={handleContinue}
           disabled={selected.length === 0 || loadingContinue}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded disabled:opacity-50 cursor-pointer"
+          className={`bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded disabled:opacity-50 ${loadingContinue ? 'cursor-not-allowed' : 'cursor-pointer'}`}
         >
           Continue
         </button>

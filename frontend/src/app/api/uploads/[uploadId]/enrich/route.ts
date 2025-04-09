@@ -16,6 +16,7 @@ export async function POST(req: NextRequest, { params }: { params: { uploadId: s
     );
 
     const data = await res.json();
+    console.log('debug data', data);
     return NextResponse.json(data, { status: res.status });
   } catch (error) {
     console.error('Error enriching products:', error);
