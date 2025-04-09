@@ -8,6 +8,7 @@ type Product = {
   name: string;
   brand: string;
   barcode: string;
+  images: string;
   attributes: Record<string, string | null>;
 };
 
@@ -306,6 +307,7 @@ export default function ProductListPage({ params }: { params: Promise<{ uploadId
                   <th className="p-2 border">Name</th>
                   <th className="p-2 border">Brand</th>
                   <th className="p-2 border">Barcode</th>
+                  <th className="p-2 border">Images</th>
                   {attributeKeys.map(attr => (
                     <th key={attr} className="p-2 border capitalize">
                       {attr}
@@ -328,6 +330,7 @@ export default function ProductListPage({ params }: { params: Promise<{ uploadId
                     <td className="p-2 border">{prod.name}</td>
                     <td className="p-2 border">{prod.brand}</td>
                     <td className="p-2 border">{prod.barcode}</td>
+                    <td className="p-2 border">{prod.images}</td>
                     {attributeKeys.map(attr => (
                       <td key={attr} className="p-2 border text-gray-200">
                         {prod.attributes?.[attr] || <span className="text-gray-500 italic">-</span>}
