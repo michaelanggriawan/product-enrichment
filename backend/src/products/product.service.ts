@@ -101,8 +101,8 @@ export class ProductsService {
   
       if (!products.length) {
         throw new NotFoundException(`No products found for enrichment`);
-      }
-  
+      } 
+
       const enriched = await Promise.all(
         products.map(async (product) => {
           const initializedKeys = Object.keys(product.attributes || {});
@@ -122,7 +122,6 @@ export class ProductsService {
   Image: ${firstImage}
   
   Return a valid JSON with only the missing attributes.`;
-  
           try {
             const completion = await this.openai.chat.completions.create({
               model: 'gpt-4o',
@@ -132,8 +131,22 @@ export class ProductsService {
             const content = completion.choices[0].message.content?.trim() || '{}';
             const cleaned = content.replace(/```json|```/g, '').trim();
             const newAttributes = JSON.parse(cleaned);
+
   
-            product.attributes = { ...product.attributes, ...newAttributes };
+          // Normalize both keys
+          const normalizedNewAttributes = Object.fromEntries(
+            Object.entries(newAttributes).map(([key, value]) => [key.trim().toLowerCase(), value])
+          );
+
+          const currentAttributes = Object.fromEntries(
+            Object.entries(product.attributes || {}).map(([key, value]) => [key.trim().toLowerCase(), value])
+          );
+
+          product.attributes = {
+            ...currentAttributes,
+            ...normalizedNewAttributes,
+          };
+
             return product;
           } catch (err) {
             console.error(`Enrichment failed for product ${product.id}`, err);
@@ -141,7 +154,7 @@ export class ProductsService {
           }
         })
       );
-  
+      
       await this.repo.save(enriched);
       return { enriched: enriched.length };
     } catch (error) {
