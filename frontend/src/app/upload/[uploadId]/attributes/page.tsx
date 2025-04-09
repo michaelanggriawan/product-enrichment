@@ -24,6 +24,9 @@ export default function AttributeSelectPage({ params }: { params: Promise<{ uplo
   }>({ name: '', type: '' });
   const [showModal, setShowModal] = useState(false);
   const [attrToDelete, setAttrToDelete] = useState<string | null>(null);
+  const [loadingDelete, setLoadingDelete] = useState(false);
+  const [loadingContinue, setLoadingContinue] = useState(false);
+  const [loadingAddSave, setLoadingSave] = useState(false);
   const router = useRouter();
   const { uploadId } = use(params);
 
@@ -43,6 +46,7 @@ export default function AttributeSelectPage({ params }: { params: Promise<{ uplo
   };
 
   const handleAddAttribute = async () => {
+    setLoadingSave(true);
     if (!newAttr.name || !newAttr.type) {
       alert('Please fill in name and type');
       return;
@@ -71,6 +75,7 @@ export default function AttributeSelectPage({ params }: { params: Promise<{ uplo
 
     setNewAttr({ name: '', type: '', unit: '', options: '' });
     fetchAttributes();
+    setLoadingSave(false);
   };
 
   const confirmDelete = (id: string) => {
@@ -79,6 +84,7 @@ export default function AttributeSelectPage({ params }: { params: Promise<{ uplo
   };
 
   const handleDelete = async () => {
+    setLoadingDelete(true);
     if (!attrToDelete) return;
     await fetch(`/api/attributes/${attrToDelete}`, {
       method: 'DELETE',
@@ -89,9 +95,11 @@ export default function AttributeSelectPage({ params }: { params: Promise<{ uplo
     toast.success('Attribute deleted!');
     setAttrToDelete(null);
     setShowModal(false);
+    setLoadingDelete(false);
   };
 
   const handleContinue = async () => {
+    setLoadingContinue(true);
     const res = await fetch(`/api/uploads/${uploadId}/attributes`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -106,6 +114,7 @@ export default function AttributeSelectPage({ params }: { params: Promise<{ uplo
     toast.success('Attributes saved!');
 
     router.push(`/upload/${uploadId}/products`);
+    setLoadingContinue(false);
   };
 
   return (
@@ -123,6 +132,7 @@ export default function AttributeSelectPage({ params }: { params: Promise<{ uplo
             >
               <label className="flex items-center space-x-3">
                 <input
+                  disabled={loadingDelete}
                   type="checkbox"
                   checked={selected.includes(attr.id)}
                   onChange={() => toggleSelection(attr.id)}
@@ -187,8 +197,9 @@ export default function AttributeSelectPage({ params }: { params: Promise<{ uplo
           )}
         </div>
         <button
+          disabled={loadingAddSave}
           onClick={handleAddAttribute}
-          className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
+          className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded cursor-pointer"
         >
           Add Attribute
         </button>
@@ -197,7 +208,7 @@ export default function AttributeSelectPage({ params }: { params: Promise<{ uplo
       <div className="text-center">
         <button
           onClick={handleContinue}
-          disabled={selected.length === 0}
+          disabled={selected.length === 0 || loadingContinue}
           className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded disabled:opacity-50 cursor-pointer"
         >
           Continue

@@ -1,9 +1,6 @@
 import { NextResponse, NextRequest } from 'next/server';
 
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
   const { id } = params;
   const backendUrl = `${process.env.NEXT_PUBLIC_API_URL}/attributes/${id}`;
 

@@ -127,7 +127,7 @@ export default function ProductListPage({ params }: { params: Promise<{ uploadId
 
     const keys = new Set<string>();
     const options: Record<string, Set<string>> = {};
-      // @ts-ignore
+    // @ts-ignore
     items.forEach(p => {
       Object.entries(p.attributes || {}).forEach(([key, value]) => {
         keys.add(key);
@@ -275,10 +275,12 @@ export default function ProductListPage({ params }: { params: Promise<{ uploadId
               onClick={handleEnrich}
               disabled={enriching || selectedProductIds.length === 0}
               className={`px-4 py-2 rounded text-white 
-                ${enriching || selectedProductIds.length === 0
-                  ? 'bg-green-600 opacity-50 cursor-not-allowed'
-                  : 'bg-green-600 hover:bg-green-700 cursor-pointer'}
-              `}
+ ${
+   enriching || selectedProductIds.length === 0
+     ? 'bg-green-600 opacity-50 cursor-not-allowed'
+     : 'bg-green-600 hover:bg-green-700 cursor-pointer'
+ }
+ `}
             >
               {enriching ? 'Enriching...' : 'Enrich'}
             </button>
@@ -375,7 +377,7 @@ export default function ProductListPage({ params }: { params: Promise<{ uploadId
             onClick={closeEditModal}
             className="absolute inset-0 bg-black bg-opacity-70 animate-fadeIn"
           />
-          <div className="relative bg-white dark:bg-gray-900 text-black dark:text-white p-6 rounded-lg shadow-lg w-full max-w-md animate-slideUp">
+          <div className="relative bg-[#111827] text-white dark:text-white p-6 rounded-lg shadow-lg w-full max-w-md max-h-[90vh] overflow-y-auto animate-slideUp">
             <h2 className="text-lg font-bold mb-4">Edit Attributes</h2>
             {attributeKeys.map(attr => (
               <div key={attr} className="mb-4">
@@ -413,8 +415,8 @@ export default function ProductListPage({ params }: { params: Promise<{ uploadId
             onClick={() => setShowFilterModal(false)}
             className="absolute inset-0 bg-black bg-opacity-70 animate-fadeIn"
           />
-          <div className="relative bg-white dark:bg-gray-900 text-black dark:text-white p-6 rounded-lg shadow-lg w-full max-w-md max-h-[90vh] overflow-y-auto animate-slideUp">
-            <h2 className="text-lg font-bold mb-4">Filter Products</h2>
+          <div className="relative bg-[#111827] text-white dark:text-white p-6 rounded-lg shadow-lg w-full max-w-md max-h-[90vh] overflow-y-auto animate-slideUp">
+            <h2 className="text-lg font-bold mb-4">Filter Productss</h2>
             {attributeKeys.map(attr => (
               <div key={attr} className="mb-4">
                 <label className="block mb-1 capitalize">{attr}</label>
@@ -439,7 +441,7 @@ export default function ProductListPage({ params }: { params: Promise<{ uploadId
                   clearFilters();
                   setShowFilterModal(false);
                 }}
-                className="px-4 py-2 rounded border dark:border-gray-600 text-gray-700 dark:text-white dark:hover:bg-gray-700 cursor-pointer"
+                className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 text-black dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white cursor-pointer"
               >
                 Clear
               </button>
@@ -460,7 +462,7 @@ export default function ProductListPage({ params }: { params: Promise<{ uploadId
             onClick={() => setShowCreateAttrModal(false)}
             className="absolute inset-0 bg-black bg-opacity-70 animate-fadeIn"
           />
-          <div className="relative bg-white dark:bg-gray-900 text-black dark:text-white p-6 rounded-lg shadow-lg w-full max-w-md max-h-[90vh] overflow-y-auto animate-slideUp">
+          <div className="relative bg-[#111827] text-white p-6 rounded-lg shadow-lg w-full max-w-md max-h-[90vh] overflow-y-auto animate-slideUp">
             <h2 className="text-xl font-bold mb-6 text-center">Manage Attributes</h2>
 
             {/* List Attributes */}
@@ -481,7 +483,7 @@ export default function ProductListPage({ params }: { params: Promise<{ uploadId
                   </label>
                   <button
                     onClick={() => handleDelete(attr.id)}
-                    className="text-red-400 hover:text-red-600 text-sm"
+                    className="text-red-400 hover:text-red-600 text-sm cursor-pointer"
                   >
                     Delete
                   </button>
@@ -547,20 +549,19 @@ export default function ProductListPage({ params }: { params: Promise<{ uploadId
 
             {/* Close Modal Button */}
             <div className="flex justify-center gap-4 mt-6">
-  <button
-    onClick={handleSaveAttributesToUpload}
-    className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded cursor-pointer"
-  >
-    Save
-  </button>
-  <button
-    onClick={() => setShowCreateAttrModal(false)}
-    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded cursor-pointer"
-  >
-    Close
-  </button>
-</div>
-
+              <button
+                onClick={handleSaveAttributesToUpload}
+                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded cursor-pointer"
+              >
+                Save
+              </button>
+              <button
+                onClick={() => setShowCreateAttrModal(false)}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded cursor-pointer"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}
